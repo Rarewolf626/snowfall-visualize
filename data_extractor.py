@@ -57,5 +57,5 @@ class DataExtractor:
                     if self.in_state(row[2], row[1]): # lng, lat
                         writer.writerow(row)
 
-extractor = DataExtractor('washington')
+extractor = DataExtractor('california')
 extractor.extract_data()
