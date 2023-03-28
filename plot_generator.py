@@ -38,7 +38,7 @@ class PlotGenerator:
         self.sde_max = np.max(self.data['sde']) * 3.28084
         sm = mpl.cm.ScalarMappable(cmap=self.cmap, norm=mpl.colors.Normalize(vmin=0, vmax=self.sde_max))
         sm.set_array([])
-        cbar = self.fig.colorbar(sm, shrink=0.5, aspect=10, pad=-0.15)
+        cbar = self.fig.colorbar(sm, shrink=0.3, aspect=10, pad=-0.03)
         cbar.ax.set_ylabel('Snow Depth (ft)')
         cbar.ax.yaxis.set_ticks_position('left')
         cbar.ax.yaxis.set_label_position('left')
@@ -52,8 +52,8 @@ class PlotGenerator:
         dz = z / self.sde_max
         self.ax.clear()
         self.ax.bar3d(x, y, np.zeros(len(z)), dx=0.16, dy=0.16, dz=z, color=self.cmap(dz), edgecolor=None)
-        self.ax.set_box_aspect([0.9, 1, 1])  # Set aspect ratio of x, y, z axes
-        self.ax.set_title(pd.to_datetime(time, unit="s").strftime("%m/%d/%Y"), pad=-20, y=0.9)
+        self.ax.set_box_aspect([6, 4.5, 2])  # Set aspect ratio of x, y, z axes
+        self.ax.set_title(pd.to_datetime(time, unit="s").strftime("%m/%d/%Y"), pad=-25, y=0.9)
         self.fig.subplots_adjust(left=0.1, right=0.9, bottom=0.1, top=0.9)
         self.ax.axis('off')
         self.ax.view_init(elev=60, azim=-90)
@@ -75,11 +75,12 @@ class PlotGenerator:
 
     def generate_plot(self):
         if self.type == '3d':
-            self.update_3d(0)
-            plt.show()
+            # self.update_3d(130)
+            # plt.show()
 
-            # ani = animation.FuncAnimation(self.fig, self.update_3d, frames=len(self.unique_times))
+            ani = animation.FuncAnimation(self.fig, self.update_3d, frames=len(self.unique_times))
             # ani.save(f"snow_depth_gifs/{'_'.join(self.states)}_snow_depth_3d.gif", writer='pillow')
+            ani.save(f"snow_depth_gifs/conus_snow_depth_3d.gif", writer='pillow')
         
         if self.type == 'contour':
             self.update_contour(140)
@@ -90,5 +91,7 @@ class PlotGenerator:
 
 
 
-plot = PlotGenerator('3d', ['iowa', 'kansas', 'missouri', 'nebraska', 'colorado', 'wyoming'])
+plot = PlotGenerator('3d', ['alabama', 'arizona', 'arkansas', 'california', 'colorado', 'connecticut', 'delaware', 'florida', 'georgia', 'idaho', 'illinois', 'indiana', 'iowa', 'kansas', 'kentucky', 'louisiana', 'maine', 'maryland', 'massachusetts', 'michigan', 'minnesota', 'mississippi', 'missouri', 'montana', 'nebraska', 'nevada', 'new_hampshire', 'new_jersey', 'new_mexico', 'new_york', 'north_carolina', 'north_dakota', 'ohio', 'oklahoma', 'oregon', 'pennsylvania', 'rhode_island', 'south_carolina', 'south_dakota', 'tennessee', 'tx_east', 'tx_west', 'utah', 'vermont', 'virginia', 'washington', 'west_virginia', 'wisconsin', 'wyoming'])
+
 plot.generate_plot()
+
